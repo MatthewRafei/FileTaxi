@@ -8,6 +8,8 @@
 
 #define DIR "~/Downloads"
 
+// Do not allow infinite looping logic, folders should not be connected in circle or loop into each other
+
 enum Dir {
   DIR_DOCUMENTS = 0,
   DIR_MUSIC = 1,
@@ -44,26 +46,46 @@ enum Dir {
 //     "$HOME/Documents/Spreadsheets",
 // }
 
-uint32_t dir_from_filetype();
-uint32_t filetype_from_ext();
+uint32_t
+dir_from_filetype();
+uint32_t
+filetype_from_ext();
 
-void move_file();
+void
+move_file();
 
-/* void test_strs() { */
-/*   struct ftstr test_ftstr = ftstr_create(); */
-/*   assert(test_ftstr.value == sizeof(char)); */
-/*   assert(test_ftstr.cap == 1); */
-/*   assert(test_ftstr.len == 0); */
-/*   assert(test_ftstr.value[0] == '\0'); */
+void
+test_strs() {
+    // Create ftstr string
+   struct ftstr test_ftstr = ftstr_create();
+   // Test the size of .value should be the same as char
+   assert(sizeof(*(test_ftstr.value)) == sizeof(char));
+   // Test capacity should be 1
+   assert(test_ftstr.cap == 1);
+   // Test length should be 0 as 0 indexed
+   assert(test_ftstr.len == 0);
+   // Test wether the character was set to null terminator or not
+   assert(test_ftstr.value[0] == '\0');
 
-/*   char *cstr = "Hello, world!"; */
-/*   struct ftstr cstr_to_ftstr = ftstr_from_cstr(cstr); */
-/*   test_ftstr.value = ftstr_append_cstr(test_ftstr, cstr); */
-/*   assert(if(test_ftstr.value == cstr_to_ftstr.value)); */
-  
-/* } */
+   // Create new c str and set it equal to "Hello, world!"
+   char *cstr = "Hello, world!";
+   // Turn newly created c str to ftstr
+   struct ftstr cstr_to_ftstr = ftstr_from_cstr(cstr);
+   // Set the value of ftstr to the c str value.
+   test_ftstr = ftstr_from_cstr(cstr);
 
-int main(void) {
+   // Test if contents of value for both ftstr structs are the same
+   assert(*(test_ftstr.value) == *(cstr_to_ftstr.value));
+
+   // test_ftstr2 is equal to test_ftstr
+   struct ftstr test_ftstr2 = ftstr_from_ftstr(&test_ftstr);
+
+   // These should have the same value
+   assert(*(test_ftstr2.value) == *(test_ftstr.value));
+}
+
+int
+main(void) {
     printf("size = %zu\n", sizeof(struct ftstr));
 
     struct ftstr str = ftstr_from_cstr("foo bar baz");
@@ -75,10 +97,15 @@ int main(void) {
         ftstr_dump(&lst[i]);
         putchar('\n');
     }
-    
-    //test_strs();
 
-    printf("What is the size of char in int %d\n", (int)sizeof(char));
+    // If we create ftstr from ftstr_from_cstr than all we need to do is free.
+    free(str.value);
+    //free(lst->value);
+    //free(lst);
+
+    test_strs();
+
+    //printf("What is the size of char in int %d\n", (int)sizeof(char));
 
 
     return 0;

@@ -14,7 +14,6 @@ void test_ftstr_from_cstr(const char* cstr) {
         cut_assert_eqstr(str.value, "Hello, world!");
 }
 
-
 int
 main(void) {
     CUT_BEGIN;

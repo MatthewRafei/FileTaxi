@@ -71,6 +71,7 @@ ftstr_from_split_on_delim(struct ftstr *str, char delim, size_t *len) {
             struct ftstr newstr = ftstr_from_ftstr(&buf);
             DA_APPEND(lst, lstlen, lstcap, struct ftstr, &newstr);
             ftstr_clear(&buf);
+            //free(newstr.value);
         }
         else {
             ftstr_append_char(&buf, c);

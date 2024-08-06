@@ -6,6 +6,8 @@
 #include "ftstr.h"
 #include "utils.h"
 
+#include "inotify.h"
+
 #define DIR "~/Downloads"
 
 // Do not allow infinite looping logic, folders should not be connected in circle or loop into each other
@@ -85,7 +87,13 @@ test_strs() {
 }
 
 int
-main(void) {
+main(int argc, char* argv[]) {
+
+    if(argc != 2) {
+        printf("You need to specify a directory to watch\n");
+        exit(1);
+    }
+
     printf("size = %zu\n", sizeof(struct ftstr));
 
     struct ftstr str = ftstr_from_cstr("foo bar baz");
@@ -105,8 +113,16 @@ main(void) {
 
     test_strs();
 
+    printf("What is argv[1] : %s\n", argv[1]);
+
+    int ch;
+    do {
+        char* newly_created_file = inotify_watch_dir(argv[1]);
+        printf("The newly created file is %s\n", newly_created_file);
+    }while((ch = getchar()) != 'q');
+
     //printf("What is the size of char in int %d\n", (int)sizeof(char));
 
-
+    (void)argc;
     return 0;
 }

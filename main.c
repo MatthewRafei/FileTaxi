@@ -35,7 +35,7 @@ enum Dir {
 // static const char *const arr[] = {
 //     "/Documents/Word_Processor_And_Text_files",
 //     "/Music",
-//     "/Pictures",
+//     "/Pictures", 
 //     "/Videos",
 //     "/Documents/Compressed_Files",
 //     "/Documents/Disk_Images",
@@ -53,12 +53,19 @@ dir_from_filetype();
 uint32_t
 filetype_from_ext();
 
+// Returns 1 if the computer is on.
+// Else value is undefined.
+uint32_t
+is_computer_on() {
+  return 1;
+}
+
 void
 move_file();
 
 void
 test_strs() {
-    // Create ftstr string
+   // Create ftstr string
    struct ftstr test_ftstr = ftstr_create();
    // Test the size of .value should be the same as char
    assert(sizeof(*(test_ftstr.value)) == sizeof(char));
@@ -89,8 +96,13 @@ test_strs() {
 int
 main(int argc, char* argv[]) {
 
-    if(argc != 2) {
+    if(argc < 2) {
         printf("You need to specify a directory to watch\n");
+        exit(1);
+    }
+
+    if(argc > 2) {
+        printf("Too many arguments I only need a directory to watch\n");
         exit(1);
     }
 

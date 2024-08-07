@@ -16,7 +16,7 @@ inotify_watch_dir(char *dir) {
     int fd = inotify_init();
 
     // This is problem because?
-    if (fd < 0) {
+      if (fd < 0) {
       perror("inotify_init");
     }
 
@@ -26,22 +26,23 @@ inotify_watch_dir(char *dir) {
     // This is a problem because?
     if(wd < 0) {
         perror("inotify_add_watch");
-    }
+    }		
+
     int length;
     // Infinite loop to continously watch directory.
     while((length = read(fd, buffer, BUFFER_SIZE))){
         int i = 0;
         while(i < length) {
             struct inotify_event *event = (struct inotify_event *) &buffer[i];
-            if (event->mask & IN_CREATE) {
-                close(fd);
-                return event->name;
-            }
-            i += EVENT_SIZE + event->len;
+	    if (event->mask & IN_CREATE) {
+	      printf("What is a cookie %d\n", event->cookie);
+	      return event->name;
+	    }
+	    i += EVENT_SIZE + event->len;
         }
     }
 
     // Close file descriptor
-    close(fd);
+    //close(fd);
     return 0;
 }

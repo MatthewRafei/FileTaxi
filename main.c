@@ -4,14 +4,21 @@
 #include <assert.h>
 
 #include "ftstr.h"
-#include "utils.h"
+//#include "utils.h"
 
-#include "inotify.h"
+#include "ft-inotify.h"
 
-#define DIR "~/Downloads"
+// TODO
+// Impliment a QUEUE
+// Convert inotify event->names into ftstrings
+// Parse TOML config
+/* Program move criteria must include extension to work
+because all sorts of programs create tmp files */
+
+//#define DIR "~/Downloads"
 
 // Do not allow infinite looping logic, folders should not be connected in circle or loop into each other
-
+/*
 enum Dir {
   DIR_DOCUMENTS = 0,
   DIR_MUSIC = 1,
@@ -28,6 +35,7 @@ enum Dir {
   DIR_SPREADSHEETS = 12,
   DIR_NONE = 13,
 };
+*/
 
 // inotifywait -m -e close_write -e moved_to --format "%f" "$TARGET" | while read FILENAME; do
 //
@@ -35,7 +43,7 @@ enum Dir {
 // static const char *const arr[] = {
 //     "/Documents/Word_Processor_And_Text_files",
 //     "/Music",
-//     "/Pictures", 
+//     "/Pictures",
 //     "/Videos",
 //     "/Documents/Compressed_Files",
 //     "/Documents/Disk_Images",
@@ -62,7 +70,7 @@ is_computer_on() {
 
 void
 move_file();
-
+/*
 void
 test_strs() {
    // Create ftstr string
@@ -92,6 +100,7 @@ test_strs() {
    // These should have the same value
    assert(*(test_ftstr2.value) == *(test_ftstr.value));
 }
+*/
 
 int
 main(int argc, char* argv[]) {
@@ -123,15 +132,15 @@ main(int argc, char* argv[]) {
     //free(lst->value);
     //free(lst);
 
-    test_strs();
+    //test_strs();
 
     printf("What is argv[1] : %s\n", argv[1]);
 
-    int ch;
+    //int ch;
     do {
         char* newly_created_file = inotify_watch_dir(argv[1]);
         printf("The newly created file is %s\n", newly_created_file);
-    }while((ch = getchar()) != 'q');
+    }while(1);
 
     //printf("What is the size of char in int %d\n", (int)sizeof(char));
 

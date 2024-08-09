@@ -1,1 +1,1 @@
-char* inotify_watch_dir(char*);
+struct ftstr inotify_watch_dir();
